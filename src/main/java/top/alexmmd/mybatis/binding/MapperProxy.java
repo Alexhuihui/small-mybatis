@@ -23,7 +23,8 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (Object.class.equals(method.getDeclaringClass())) {
+        Class<?> declaringClass = method.getDeclaringClass();
+        if (Object.class.equals(declaringClass)) {
             return method.invoke(this, args);
         } else {
             return "你的被代理了！" + sqlSession.get(mapperInterface.getName() + "." + method.getName());

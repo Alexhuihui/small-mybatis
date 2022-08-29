@@ -7,5 +7,15 @@
     FROM user
     where id = #{id}
   </select>
+  <select id="queryUserName" resultType="java.lang.String">
+    SELECT id, userId, userName, userHead, createTime, updateTime
+    FROM user
+    where userName = #{userName}
+  </select>
+  <select id="queryUserAge" resultType="java.lang.Integer">
+    SELECT id, userId, userName, userHead, createTime, updateTime
+    FROM user
+    where id = #{id}
+  </select>
 
 </mapper>

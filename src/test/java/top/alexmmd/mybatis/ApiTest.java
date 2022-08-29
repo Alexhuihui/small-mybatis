@@ -19,13 +19,14 @@ public class ApiTest {
         MapperProxyFactory<IUserDao> factory = new MapperProxyFactory<>(IUserDao.class);
 
         Map<String, String> sqlSession = new HashMap<>();
-        sqlSession.put("cn.bugstack.mybatis.test.dao.IUserDao.queryUserName", "模拟执行 Mapper.xml 中 SQL 语句的操作：查询用户姓名");
-        sqlSession.put("cn.bugstack.mybatis.test.dao.IUserDao.queryUserAge", "模拟执行 Mapper.xml 中 SQL 语句的操作：查询用户年龄");
+        sqlSession.put("top.alexmmd.mybatis.dao.IUserDao.queryUserName", "模拟执行 Mapper.xml 中 SQL 语句的操作：查询用户姓名");
+        sqlSession.put("top.alexmmd.mybatis.dao.IUserDao.queryUserAge", "模拟执行 Mapper.xml 中 SQL 语句的操作：查询用户年龄");
         IUserDao userDao = factory.newInstance(sqlSession);
 
-        userDao.toString();
+        String toString = userDao.toString();
+        System.out.println("toString = " + toString);
 
-        String res = userDao.queryUserName("10001");
+        String res = userDao.queryUserName("www");
         logger.info("测试结果：{}", res);
     }
 
