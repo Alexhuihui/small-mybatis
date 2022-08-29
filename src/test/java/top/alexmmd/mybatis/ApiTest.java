@@ -1,30 +1,32 @@
 package top.alexmmd.mybatis;
 
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Test;
 
-import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import top.alexmmd.mybatis.binding.MapperProxyFactory;
 import top.alexmmd.mybatis.dao.IUserDao;
-import top.alexmmd.mybatis.po.User;
 
 public class ApiTest {
 
+    private Logger logger = LoggerFactory.getLogger(ApiTest.class);
+
     @Test
-    public void test_SqlSessionFactory() throws IOException {
-        // 1. 从SqlSessionFactory中获取SqlSession
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsReader("mybatis-config-datasource.xml"));
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+    public void test_MapperProxyFactory() {
+        MapperProxyFactory<IUserDao> factory = new MapperProxyFactory<>(IUserDao.class);
 
-        // 2. 获取映射器对象
-        IUserDao userDao = sqlSession.getMapper(IUserDao.class);
+        Map<String, String> sqlSession = new HashMap<>();
+        sqlSession.put("cn.bugstack.mybatis.test.dao.IUserDao.queryUserName", "模拟执行 Mapper.xml 中 SQL 语句的操作：查询用户姓名");
+        sqlSession.put("cn.bugstack.mybatis.test.dao.IUserDao.queryUserAge", "模拟执行 Mapper.xml 中 SQL 语句的操作：查询用户年龄");
+        IUserDao userDao = factory.newInstance(sqlSession);
 
-        // 3. 测试验证
-        User user = userDao.queryUserInfoById(1L);
-        System.out.println("user = " + user);
+        userDao.toString();
+
+        String res = userDao.queryUserName("10001");
+        logger.info("测试结果：{}", res);
     }
 
 }

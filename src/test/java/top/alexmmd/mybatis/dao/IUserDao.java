@@ -8,5 +8,7 @@ import top.alexmmd.mybatis.po.User;
  */
 public interface IUserDao {
 
-    User queryUserInfoById(Long uId);
+    String queryUserName(String uId);
+
+    Integer queryUserAge(String uId);;
 }
