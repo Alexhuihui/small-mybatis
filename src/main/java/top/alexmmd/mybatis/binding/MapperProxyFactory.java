@@ -2,6 +2,7 @@ package top.alexmmd.mybatis.binding;
 
 import java.lang.reflect.Proxy;
 import java.util.Map;
+import top.alexmmd.mybatis.session.SqlSession;
 
 /**
  * @author wangyonghui
@@ -15,7 +16,8 @@ public class MapperProxyFactory<T> {
         this.mapperInterface = mapperInterface;
     }
 
-    public T newInstance(Map<String, String> sqlSession) {
+    @SuppressWarnings("unchecked")
+    public T newInstance(SqlSession sqlSession) {
         final MapperProxy<T> mapperProxy = new MapperProxy<>(sqlSession, mapperInterface);
         return (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]{mapperInterface}, mapperProxy);
     }

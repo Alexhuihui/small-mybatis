@@ -1,6 +1,5 @@
 package top.alexmmd.mybatis.dao;
 
-import top.alexmmd.mybatis.po.User;
 
 /**
  * @author wangyonghui
