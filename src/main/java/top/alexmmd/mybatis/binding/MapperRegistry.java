@@ -4,6 +4,7 @@ import cn.hutool.core.lang.ClassScanner;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import top.alexmmd.mybatis.session.Configuration;
 import top.alexmmd.mybatis.session.SqlSession;
 
 /**
@@ -11,13 +12,21 @@ import top.alexmmd.mybatis.session.SqlSession;
  * @date 2022年08月29日 19:06:00
  */
 public class MapperRegistry {
+
+    private Configuration config;
+
+    public MapperRegistry(Configuration config) {
+        this.config = config;
+    }
+
     /**
      * 将已添加的映射器代理加入到 HashMap
      */
     private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
 
     public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
-        final MapperProxyFactory<T> mapperProxyFactory = (MapperProxyFactory<T>) knownMappers.get(type);
+        final MapperProxyFactory<T> mapperProxyFactory = (MapperProxyFactory<T>) knownMappers.get(
+                type);
         if (mapperProxyFactory == null) {
             throw new RuntimeException("Type " + type + " is not known to the MapperRegistry.");
         }
@@ -33,7 +42,8 @@ public class MapperRegistry {
         if (type.isInterface()) {
             if (hasMapper(type)) {
                 // 如果重复添加了，报错
-                throw new RuntimeException("Type " + type + " is already known to the MapperRegistry.");
+                throw new RuntimeException(
+                        "Type " + type + " is already known to the MapperRegistry.");
             }
             // 注册映射器代理工厂
             knownMappers.put(type, new MapperProxyFactory<>(type));
